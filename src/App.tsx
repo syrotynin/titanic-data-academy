@@ -33,6 +33,8 @@ export default function App() {
   const [result, setResult] = useState<Output | null>(null);
   const [hint, setHint] = useState(0);
   const [solution, setSolution] = useState(false);
+  const [exampleResult, setExampleResult] = useState<Output | null>(null);
+  const [exampleError, setExampleError] = useState("");
   const [storageWarning, setStorageWarning] = useState(false);
   const missionToScrollTo = useRef<string | null>(null);
   useEffect(() => {
@@ -103,6 +105,21 @@ export default function App() {
     if (engineReady) setError("");
     setHint(0);
     setSolution(false);
+    setExampleResult(null);
+    setExampleError("");
+  }
+  async function runExample() {
+    setBusy(true);
+    setExampleResult(null);
+    setExampleError("");
+    try {
+      const output = await client.query(mission.example.sql);
+      setExampleResult(output.actual);
+    } catch (reason) {
+      setExampleError(reason instanceof Error ? reason.message : String(reason));
+    } finally {
+      setBusy(false);
+    }
   }
   async function execute(assessment = false) {
     setBusy(true);
@@ -337,19 +354,71 @@ export default function App() {
               <strong>Your goal:</strong> {mission.objective}
             </p>
             <p className="lesson-story">{mission.story}</p>
-            <div className="concept">
-              <h3>The SQL concept</h3>
+            <section className="concept learning-step" aria-labelledby="explanation-title">
+              <h3 id="explanation-title">1. Learn the idea</h3>
               <p>{mission.explanation}</p>
-            </div>
-            <div className="task">
-              <span className="task-mark" aria-hidden="true">
-                ›
-              </span>
-              <div>
-                <h3>Your task</h3>
-                <p>{mission.task}</p>
-              </div>
-            </div>
+              <h4 className="vocabulary-title">Understand every SQL symbol</h4>
+              <dl className="sql-vocabulary">
+                {mission.keyTerms.map(({ term, meaning }) => (
+                  <div className="vocabulary-item" key={term}>
+                    <dt><code>{term}</code></dt>
+                    <dd>{meaning}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+            <section className="worked-example learning-step" aria-labelledby="worked-example-title">
+              <h3 id="worked-example-title">2. Follow a worked example</h3>
+              <p>{mission.example.context}</p>
+              <pre className="example-code"><code>{mission.example.sql}</code></pre>
+              <ol className="example-steps">
+                {mission.example.walkthrough.map((step) => (
+                  <li key={step}>{step}</li>
+                ))}
+              </ol>
+              <p className="example-takeaway">{mission.example.takeaway}</p>
+              <button
+                type="button"
+                className="run-example"
+                disabled={!engineReady || busy}
+                onClick={() => void runExample()}
+              >
+                ▶ Run this example
+              </button>
+              <p className="example-caption">Runs against the real training database without changing your assignment or saved SQL draft.</p>
+              {exampleError && <p className="error" role="alert">{exampleError}</p>}
+              {exampleResult && (
+                <div className="example-output">
+                  <h4>Example output <span>({exampleResult.values.length} rows returned)</span></h4>
+                  <div className="example-table-scroll" role="region" tabIndex={0} aria-label="Example SQL results">
+                    <table>
+                      <thead>
+                        <tr>{exampleResult.columns.map((col, i) => <th scope="col" key={i}>{col}</th>)}</tr>
+                      </thead>
+                      <tbody>
+                        {exampleResult.values.slice(0, 3).map((row, i) => (
+                          <tr key={i}>
+                            {row.map((cell, j) => (
+                              <td key={j}>
+                                {cell === null ? "NULL" : cell instanceof Uint8Array ? "[binary data]" : String(cell)}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                  {exampleResult.values.length > 3 && (
+                    <small>Previewing three rows. The query returned {exampleResult.values.length} rows.</small>
+                  )}
+                </div>
+              )}
+            </section>
+            <section className="practice-step learning-step" aria-labelledby="practice-title">
+              <h3 id="practice-title">3. Your turn — the archive task</h3>
+              <p>{mission.task}</p>
+              <p className="practice-reminder">Use the explanation and example above, then write your own query in the SQL workspace below. Run query lets you experiment; Check answer completes the mission.</p>
+            </section>
             <details className="schema" open>
               <summary>Database explorer · passengers</summary>
               {schema.length ? (
