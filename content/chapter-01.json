@@ -11,13 +11,51 @@
       "kind": "concept",
       "objective": "Learn what a table, a row, and a column are.",
       "story": "The archive has received a small practice ledger of passenger records. Before beginning your research, inspect how its information is organized.",
-      "explanation": "A database stores organized information. A table holds related records. Each row is one record, and each column describes an attribute such as a passenger's name or age. SELECT * means ‘show every column’. LIMIT requests only a certain number of rows.",
-      "task": "Show the first five rows and all columns from the passengers table.",
-      "starterSql": "SELECT *\nFROM passengers\nLIMIT 5;",
+      "explanation": "SQL stands for Structured Query Language. It is how you ask a database questions. Think of the passengers table as a spreadsheet: each row is one passenger record, and each column holds one kind of information (such as a name or age). A query asks the database to show you particular information. You can inspect records safely: SELECT only reads them.",
+      "task": "Now change the example: show ALL columns from the passengers table, but return FIVE rows instead of two.",
+      "starterSql": "SELECT *\nFROM passengers\nLIMIT ...;",
       "referenceSql": "SELECT * FROM passengers LIMIT 5;",
-      "hints": ["The table is named passengers.", "SELECT * requests every column; LIMIT 5 restricts the sample.", "Try SELECT * FROM passengers LIMIT 5;"],
+      "hints": [
+        "The table is named passengers.",
+        "SELECT * requests every column; LIMIT 5 restricts the sample.",
+        "Try SELECT * FROM passengers LIMIT 5;"
+      ],
       "solutionExplanation": "SELECT * retrieves every column; FROM specifies the table; LIMIT 5 keeps the result short.",
-      "orderMatters": true
+      "orderMatters": true,
+      "keyTerms": [
+        {
+          "term": "SELECT",
+          "meaning": "Start a question to the database. It tells SQL which columns to show."
+        },
+        {
+          "term": "*",
+          "meaning": "An asterisk means ALL columns in this table—not multiplication here, and not a request for a certain number of rows."
+        },
+        {
+          "term": "FROM",
+          "meaning": "Introduces the source table. FROM passengers means 'look in the passengers table'."
+        },
+        {
+          "term": "LIMIT",
+          "meaning": "Sets the maximum number of rows shown. LIMIT 2 gives you at most two passenger records."
+        },
+        {
+          "term": ";",
+          "meaning": "The semicolon marks the end of a SQL statement. Many editors accept a single query without it, but using it is a helpful habit."
+        }
+      ],
+      "example": {
+        "context": "The archivist wants a quick look at two records, including every column they contain.",
+        "sql": "SELECT *\nFROM passengers\nLIMIT 2;",
+        "walkthrough": [
+          "SELECT begins the request.",
+          "* tells the database to return every column (name, age, ticket and the others).",
+          "FROM passengers identifies the table holding the records.",
+          "LIMIT 2 asks for just two rows; ; finishes the statement.",
+          "Press Run example to see the real database response. Then change the number for your mission."
+        ],
+        "takeaway": "SQL isn't case-sensitive for these keywords. The query displays at most two rows; without ORDER BY, the database does not guarantee which two."
+      }
     },
     {
       "id": "ch01-02",
@@ -26,13 +64,42 @@
       "kind": "practice",
       "objective": "Select a single column using SELECT and FROM.",
       "story": "The curator is preparing an index of names. She needs only the names, not every detail in the ledger.",
-      "explanation": "SQL lets you request particular columns. SELECT name FROM passengers returns the name field for each row. Use the exact field name shown in the Database Explorer.",
-      "task": "Retrieve the name of every passenger in the practice ledger.",
+      "explanation": "Now that you know SELECT and FROM, you can choose a single column instead of displaying everything with *. Write the column's exact name after SELECT. The Database Explorer lists the valid column names. Column names like age and name are data fields, not SQL keywords.",
+      "task": "Your turn: the archivist needs a list of passenger NAMES only. Return the name column for every record, with no extra columns.",
       "starterSql": "SELECT ...\nFROM passengers;",
       "referenceSql": "SELECT name FROM passengers;",
-      "hints": ["You need just one column.", "The column is called name, without an s.", "Use SELECT name FROM passengers;"],
+      "hints": [
+        "You need just one column.",
+        "The column is called name, without an s.",
+        "Use SELECT name FROM passengers;"
+      ],
       "solutionExplanation": "SELECT name returns just the name column, without extra passenger details.",
-      "orderMatters": false
+      "orderMatters": false,
+      "keyTerms": [
+        {
+          "term": "SELECT age",
+          "meaning": "Ask for only the age column instead of every column."
+        },
+        {
+          "term": "FROM passengers",
+          "meaning": "Read those ages from the passengers table."
+        },
+        {
+          "term": "name",
+          "meaning": "A different column you will need in the task. Use the exact spelling—there is no column called names."
+        }
+      ],
+      "example": {
+        "context": "The archivist wants a list of passenger ages. No names or ticket information are needed.",
+        "sql": "SELECT age\nFROM passengers;",
+        "walkthrough": [
+          "After SELECT, write the exact column you want: age.",
+          "FROM passengers chooses the table.",
+          "There is no LIMIT, so the query requests every record. Only the age column appears.",
+          "The semicolon completes the statement."
+        ],
+        "takeaway": "Use SELECT * to inspect everything, but select a named column when your question needs only that information."
+      }
     },
     {
       "id": "ch01-03",
@@ -41,13 +108,42 @@
       "kind": "practice",
       "objective": "Retrieve more than one column.",
       "story": "The archive's researcher wants to compare ages and names while reviewing the ledger.",
-      "explanation": "Put a comma between fields when selecting multiple columns: SELECT name, age FROM passengers. Column order controls how the output is displayed.",
-      "task": "Retrieve the name and age of every passenger.",
+      "explanation": "You can request several columns at the same time. Write their names after SELECT, separated by commas. The result follows the left-to-right order in your SELECT list. The comma separates columns; it does not filter rows.",
+      "task": "Now retrieve TWO fields for each passenger: name followed by age. Return all passengers.",
       "starterSql": "SELECT name, ...\nFROM passengers;",
       "referenceSql": "SELECT name, age FROM passengers;",
-      "hints": ["You need exactly two columns.", "Separate the field names with a comma.", "Try SELECT name, age FROM passengers;"],
+      "hints": [
+        "You need exactly two columns.",
+        "Separate the field names with a comma.",
+        "Try SELECT name, age FROM passengers;"
+      ],
       "solutionExplanation": "SELECT name, age produces a two-column result, with one row per passenger.",
-      "orderMatters": false
+      "orderMatters": false,
+      "keyTerms": [
+        {
+          "term": ",",
+          "meaning": "A comma separates column names. It means 'also show this column'."
+        },
+        {
+          "term": "SELECT age, ticket_fare",
+          "meaning": "Two requested columns appear in the resulting table in that order."
+        },
+        {
+          "term": "Column order",
+          "meaning": "SELECT name, age and SELECT age, name contain the same information but display columns in different positions."
+        }
+      ],
+      "example": {
+        "context": "The archive wants to compare a passenger's class with the fare printed on their ticket.",
+        "sql": "SELECT passenger_class, ticket_fare\nFROM passengers\nLIMIT 3;",
+        "walkthrough": [
+          "Start with SELECT and list passenger_class followed by ticket_fare.",
+          "Put a comma between the two names.",
+          "Use FROM passengers to find the records.",
+          "LIMIT 3 shows a small sample so you can check the output."
+        ],
+        "takeaway": "You can add another column by adding a comma and its name. Only include fields relevant to the question."
+      }
     },
     {
       "id": "ch01-04",
@@ -56,13 +152,42 @@
       "kind": "practice",
       "objective": "Use LIMIT to request a small sample.",
       "story": "The chief archivist is printing a short sample for a colleague. Space on the page is limited.",
-      "explanation": "LIMIT restricts how many rows are returned. It is useful when examining unfamiliar data. Without ORDER BY (covered next chapter), ‘first’ means the database's current row order, not a historically meaningful order.",
-      "task": "Retrieve name and passenger_class for only the first five records.",
+      "explanation": "When a table has many records, you may want just a sample. LIMIT N requests at most N rows. Put it after FROM. A row is a whole passenger record; a column is one attribute. LIMIT does not control which columns are returned.",
+      "task": "Prepare a five-row sample with exactly two columns: name and passenger_class. Use LIMIT to return no more than five records.",
       "starterSql": "SELECT name, passenger_class\nFROM passengers\nLIMIT ...;",
       "referenceSql": "SELECT name, passenger_class FROM passengers LIMIT 5;",
-      "hints": ["Select name and passenger_class.", "LIMIT belongs after FROM passengers.", "Set LIMIT to 5."],
+      "hints": [
+        "Select name and passenger_class.",
+        "LIMIT belongs after FROM passengers.",
+        "Set LIMIT to 5."
+      ],
       "solutionExplanation": "LIMIT 5 keeps only the first five records in the practice table's present order.",
-      "orderMatters": true
+      "orderMatters": true,
+      "keyTerms": [
+        {
+          "term": "LIMIT 2",
+          "meaning": "Returns no more than two rows, even if the table has many more."
+        },
+        {
+          "term": "LIMIT 5",
+          "meaning": "Your task needs a five-row sample. Write LIMIT after FROM."
+        },
+        {
+          "term": "ORDER BY",
+          "meaning": "A keyword you will learn later. Without it, SQL does not promise any meaningful or stable row order."
+        }
+      ],
+      "example": {
+        "context": "A colleague needs a short sample containing names and ages.",
+        "sql": "SELECT name, age\nFROM passengers\nLIMIT 2;",
+        "walkthrough": [
+          "Select exactly the requested columns, separated by a comma.",
+          "Choose the passengers table using FROM.",
+          "Add LIMIT 2 at the end to cap the result to two rows.",
+          "Run the example, then change both the columns and row limit for your task."
+        ],
+        "takeaway": "LIMIT is useful for exploring data. It does not necessarily return the oldest, first-booked, or historically earliest passengers."
+      }
     },
     {
       "id": "ch01-05",
@@ -71,13 +196,46 @@
       "kind": "challenge",
       "objective": "Combine selecting multiple fields and limiting results.",
       "story": "The records supervisor requests a ten-entry summary showing each passenger's identifier, name, and ticket price. This is your first independent archive assignment.",
-      "explanation": "Think about the question before writing code: Which fields do you need? Which table contains them? How many rows are requested? Build your query from these parts.",
-      "task": "Return passenger_id, name, and ticket_fare for the first ten rows, with no extra columns.",
+      "explanation": "A business request often combines things you already know. Translate it into three questions: Which columns are needed? Which table contains them? How many rows should be displayed? SQL keywords are instructions; column names refer to data. Build the query in order: SELECT columns, FROM table, optional LIMIT, and finally a semicolon.",
+      "task": "Independent assignment: return exactly the columns passenger_id, name and ticket_fare (in that order) from passengers, showing no more than ten rows. Avoid extra columns.",
       "starterSql": "-- Your assignment\nSELECT\nFROM passengers;",
       "referenceSql": "SELECT passenger_id, name, ticket_fare FROM passengers LIMIT 10;",
-      "hints": ["The three requested column names are shown in the explorer.", "Separate the columns with commas and use the passengers table.", "After FROM passengers, add LIMIT 10."],
+      "hints": [
+        "The three requested column names are shown in the explorer.",
+        "Separate the columns with commas and use the passengers table.",
+        "After FROM passengers, add LIMIT 10."
+      ],
       "solutionExplanation": "You combined multiple columns, a source table, and a row limit to satisfy a practical data request.",
-      "orderMatters": true
+      "orderMatters": true,
+      "keyTerms": [
+        {
+          "term": "SELECT column1, column2",
+          "meaning": "Choose the requested information, separating the names with commas."
+        },
+        {
+          "term": "FROM passengers",
+          "meaning": "Use the training passenger records as your data source."
+        },
+        {
+          "term": "LIMIT 10",
+          "meaning": "Produce no more than ten passenger records for the supervisor."
+        },
+        {
+          "term": "--",
+          "meaning": "Two hyphens start a comment: the database ignores the rest of that line. Comments can remind you what a query is for."
+        }
+      ],
+      "example": {
+        "context": "A colleague requests a short list of names and ages from four practice records.",
+        "sql": "-- Example archive request\nSELECT name, age\nFROM passengers\nLIMIT 4;",
+        "walkthrough": [
+          "Ignore the comment line; it only explains the purpose to a human.",
+          "Identify the two needed columns and list them after SELECT.",
+          "Read the data FROM passengers.",
+          "Limit the output to four rows. Your assignment will ask for different fields and a different row count."
+        ],
+        "takeaway": "You can solve a new task by translating the request into the SQL structure you have already practiced."
+      }
     }
   ]
 }
