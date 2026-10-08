@@ -43,6 +43,20 @@ test("all five missions have complete teaching content and valid reference answe
     assert.equal(mission.number, index + 1);
     assert.ok(mission.hints.length >= 2);
     assert.equal(typeof mission.orderMatters, "boolean");
+    assert.ok(mission.keyTerms.length >= 3, `${mission.id} glossary is missing`);
+    for (const term of mission.keyTerms) {
+      assert.ok(term.term.trim() && term.meaning.trim(), `${mission.id} has an unexplained keyword`);
+    }
+    assert.ok(mission.example.context.trim());
+    assert.ok(mission.example.takeaway.trim());
+    assert.ok(mission.example.walkthrough.length >= 3);
+    assert.notEqual(
+      mission.example.sql.replace(/\s+/g, " ").trim(),
+      mission.referenceSql.replace(/\s+/g, " ").trim(),
+      `${mission.id}: worked example must not be the assignment answer`,
+    );
+    const exampleResult = executeQuery(db, mission.example.sql);
+    assert.ok(exampleResult.values.length > 0 && !exampleResult.truncated);
     const actual = executeQuery(db, mission.referenceSql);
     assert.equal(actual.values.length, [5, 24, 24, 5, 10][index]);
     assert.ok(grade(actual, actual, mission.orderMatters).correct);

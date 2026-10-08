@@ -20,7 +20,19 @@ Historical backdrop and exercise records are deliberately distinct: fictional na
 | 4 | A Shorter Register | `LIMIT` | First five `name` and `passenger_class` values |
 | 5 | Your First Assignment | Independent query construction | First ten `passenger_id`, `name`, `ticket_fare` values |
 
-All mission definitions, starter queries, reference queries and hints are in `content/chapter-01.json`. They can be changed without editing React components.
+All mission definitions, starter queries, worked examples, reference queries and hints are in `content/chapter-01.json`. They can be changed without editing React components.
+
+## Teaching contract: explain → example → practice
+
+This course assumes the learner has **never written SQL**. Every mission follows three visible steps:
+
+1. **Learn the idea.** Explain any new syntax in plain English. The keyword glossary must explain each new symbol, including `SELECT`, `*`, `FROM`, `LIMIT`, `;`, commas, and column names as appropriate.
+2. **Follow a worked example.** Give a realistic archive request, a valid SQL query, a line-by-line breakdown, and a takeaway. The learner can run the example in place and inspect a small live preview without overwriting her SQL draft or affecting progress. Worked examples must not be the exact answers to their tasks.
+3. **Your turn.** Ask for a related but different query. The first task should be a small variation on the example; later tasks gradually require more independent thinking.
+
+For example, lesson 1 teaches `SELECT * FROM passengers LIMIT 2;`: the asterisk means **all columns**, while `LIMIT 2` means **at most two rows**. The separate assignment asks for five rows. The initial editor code is a partially completed query rather than a solved answer. Explain that `LIMIT` without `ORDER BY` does not guarantee any particular order.
+
+Every worked example is validated by automated tests against the same SQLite database used in the lesson. Real database records in Chapter 1 remain entirely fictional and clearly labelled as such.
 
 ## Assessment behavior
 
