@@ -9,6 +9,7 @@ export type Mission = {
   id: string;
   number: number;
   title: string;
+  kind: string;
   objective: string;
   story: string;
   explanation: string;

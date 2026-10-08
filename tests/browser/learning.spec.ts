@@ -16,7 +16,7 @@ async function openArchive(page: Page) {
   await expect(page.getByRole("button", { name: "▶ Run query" })).toBeEnabled();
 }
 async function query(page: Page, sql: string, assessment = false) {
-  await page.locator(".cm-content").fill(sql);
+  await page.getByLabel("SQL query", { exact: true }).fill(sql);
   await page
     .getByRole("button", {
       name: assessment ? "✓ Check answer" : "▶ Run query",
@@ -283,7 +283,7 @@ test("blocked storage warns the learner and the mobile layout stays within the v
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
   ).toBe(true);
-  await page.locator(".cm-content").focus();
+  await page.getByLabel("SQL query", { exact: true }).focus();
   await page.keyboard.press("Tab");
   await expect(page.getByRole("button", { name: "▶ Run query" })).toBeFocused();
 });
@@ -314,4 +314,97 @@ test("database load failure can be recovered with Reset engine", async ({
   await expect(page.getByRole("button", { name: "▶ Run query" })).toBeEnabled();
   await query(page, "SELECT name FROM passengers LIMIT 1;");
   await expect(page.locator("tbody td")).toHaveText("Eleanor Whitmore");
+});
+
+test("mobile SQL shortcuts preserve the cursor, grade queries, and save expanded drafts", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await openArchive(page);
+  const field = page.getByLabel("SQL query", { exact: true });
+  await expect(field).toHaveAttribute("autocapitalize", "off");
+  await expect(field).toHaveAttribute("autocorrect", "off");
+  await expect(field).toHaveCSS("font-size", "16px");
+  await field.fill("SELECT ... FROM passengers LIMIT 5;");
+  await field.evaluate((node) =>
+    (node as HTMLTextAreaElement).setSelectionRange(7, 10),
+  );
+  await page.getByRole("button", { name: "Insert *", exact: true }).click();
+  await expect(field).toHaveValue("SELECT * FROM passengers LIMIT 5;");
+  await page.getByRole("button", { name: "Expand editor" }).click();
+  const dialog = page.getByRole("dialog", { name: "Your SQL query" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByLabel("SQL query", { exact: true })).toBeFocused();
+  await dialog.getByRole("button", { name: "✓ Check answer" }).click();
+  await expect(dialog.getByRole("status")).toContainText("Excellent!");
+  await dialog.getByLabel("SQL query", { exact: true }).fill("");
+  await dialog
+    .getByRole("button", { name: "Insert select", exact: true })
+    .click();
+  await dialog.getByLabel("Insert table or column").selectOption("name");
+  await dialog
+    .getByRole("button", { name: "Insert new line", exact: true })
+    .click();
+  await dialog
+    .getByRole("button", { name: "Insert from", exact: true })
+    .click();
+  await dialog.getByLabel("Insert table or column").selectOption("passengers");
+  await dialog.getByRole("button", { name: "Insert ;", exact: true }).click();
+  await dialog.getByRole("button", { name: "▶ Run query" }).click();
+  await expect(dialog.getByRole("status")).toContainText("Query executed");
+  await dialog.getByRole("button", { name: "Done editing" }).click();
+  await expect(dialog).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Expand editor" }),
+  ).toBeFocused();
+  await expect(page.locator("tbody tr")).toHaveCount(24);
+  await expect(page.getByRole("progressbar")).toHaveAttribute(
+    "aria-valuenow",
+    "1",
+  );
+  await page.reload();
+  await expect(field).toHaveValue("SELECT name \nFROM passengers ;");
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
+});
+
+test("expanded mobile editor fits a keyboard-sized viewport and Escape returns to the lesson", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 320, height: 640 });
+  await openArchive(page);
+  await page.getByRole("button", { name: "Expand editor" }).click();
+  await page.setViewportSize({ width: 320, height: 360 });
+  const dialog = page.getByRole("dialog");
+  await expect(dialog).toBeVisible();
+  await expect
+    .poll(async () => {
+      const box = await dialog.boundingBox();
+      return Boolean(
+        box && box.y >= 0 && box.y + box.height <= 360 && box.width <= 320,
+      );
+    })
+    .toBe(true);
+  await dialog
+    .getByLabel("SQL query", { exact: true })
+    .fill("SELECT name FROM passengers LIMIT 1;");
+  await page.keyboard.press("Tab");
+  await expect(
+    dialog.getByRole("button", { name: "▶ Run query" }),
+  ).toBeFocused();
+  await page.keyboard.press("Enter");
+  await expect(dialog.getByRole("status")).toContainText("Query executed");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByLabel("SQL query", { exact: true })).toHaveValue(
+    "SELECT name FROM passengers LIMIT 1;",
+  );
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+  ).toBe(true);
 });

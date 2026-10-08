@@ -9,6 +9,8 @@
 - Atmospheric Edwardian/Titanic-inspired opening and research missions.
 - Real SQL execution with `sql.js` WebAssembly inside a Web Worker.
 - Interactive CodeMirror editor, results grid, and database schema explorer.
+- Native mobile SQL entry with autocorrect disabled, cursor-aware SQL and column shortcuts, and an expanded editor that adjusts to the on-screen keyboard. Desktop CodeMirror loads separately.
+- Original maritime engraving, brass and parchment styling, and locally bundled typography.
 - Two separate actions: **Run query** for exploration and **Check answer** for assessment.
 - Query *result-based* grading, stepwise hints, and optional solutions.
 - IndexedDB progress and draft query persistence (localStorage fallback).
@@ -34,7 +36,7 @@ npm run build
 npm run preview
 ```
 
-**Note:** The SQLite WASM file is bundled from the `sql.js` npm package by Vite. It is not fetched from a third-party runtime CDN. The only external UI dependency at runtime is optional Google Fonts; CSS provides local fallbacks.
+**Note:** The SQLite WASM file is bundled from the `sql.js` npm package by Vite. It is not fetched from a third-party runtime CDN. The typefaces and original maritime SVG artwork are bundled locally too, so the UI has no external runtime asset dependencies.
 
 ## Browser regression checks
 
