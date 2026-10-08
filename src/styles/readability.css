@@ -1,0 +1,125 @@
+/*
+ * Readability and mission-navigation improvements.
+ * Loaded after main.css to make the learning environment legible without
+ * changing the historical typography or the SQL editor's mobile behavior.
+ */
+body { font-size: 16px; }
+
+h3 { font-size: 16px; }
+.eyebrow { font-size: 12px; }
+
+.header-nav { font-size: 14px; }
+.brand-subtitle { font-size: 11px; }
+.header-edition { font-size: 11px; }
+.header-edition span { font-size: 10px; }
+
+.hero .eyebrow { font-size: 12px; }
+.hero-description { font-size: 16px; line-height: 1.75; }
+.hero-meta { font-size: 12px; }
+.archive-label { font-size: 11px; }
+
+.ticket-chapter .eyebrow,
+.ticket-title .eyebrow,
+.sidebar-heading .eyebrow,
+.archive-note .eyebrow { font-size: 11px; }
+.ticket-title > p:last-child { font-size: 14px; }
+.progress-label { font-size: 11px; }
+.progress-label strong { font-size: 13px; }
+.ticket-progress small { font-size: 12px; }
+.journey-link { font-size: 14px; }
+
+.sidebar-heading > p:last-child { font-size: 13px; }
+.mission-label { font-size: 15px; }
+.mission-label small { font-size: 12px; }
+.note { font-size: 13px; }
+.archive-note > p:last-child { font-size: 13px; }
+
+.panel p { font-size: 16px; }
+.lesson-heading .eyebrow { font-size: 12px; }
+.lesson-kind { font-size: 11px; }
+.concept h3 { font-size: 12px; }
+.concept p { font-size: 15px; }
+.task h3 { font-size: 15px; }
+.schema summary { font-size: 15px; }
+.schema > p { font-size: 14px; }
+.schema code { font-size: 14px; }
+.schema li span { font-size: 12px; }
+.between > small { font-size: 12px; }
+.panel .editor-help { font-size: 14px; }
+.editor-tab { font-size: 12px; }
+.editor-tab > span:last-child { font-size: 11px; }
+.editor-frame .cm-scroller { font-size: 16px; }
+button:not(.mission) { font-size: 14px; }
+.help-actions button { font-size: 14px; }
+.error, .incorrect, .feedback, .hint { font-size: 14px; }
+table { font-size: 14px; }
+th { font-size: 13px; }
+.reflection li { font-size: 16px; }
+.empty small { font-size: 13px; }
+.footer-brand, .site-footer small { font-size: 12px; }
+.panel .expanded-task { font-size: 15px; }
+
+@media (max-width: 1100px) {
+  .hero-description { font-size: 16px; }
+  .mission-label { font-size: 14px; }
+}
+
+@media (max-width: 750px) {
+  /* Replace the horizontal task carousel with an at-a-glance mission grid. */
+  .missions-sidebar nav {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    padding: 13px;
+    overflow-x: visible;
+    scroll-snap-type: none;
+  }
+  .mission {
+    width: 100%;
+    min-width: 0;
+    min-height: 78px;
+    padding: 12px;
+    border: 1px solid #dedacb;
+    border-left: 3px solid transparent;
+    align-items: flex-start;
+    scroll-snap-align: none;
+  }
+  .mission.active {
+    border-color: #a18751;
+    border-left-color: #a18751;
+  }
+  .mission-label {
+    min-width: 0;
+    overflow-wrap: anywhere;
+    font-size: 14px;
+  }
+  .mission-label small { font-size: 12px; }
+
+  .brand-subtitle { font-size: 10px; }
+  .header-nav { font-size: 12px; }
+  .hero-meta { font-size: 11px; }
+  .hero .eyebrow { font-size: 11px; }
+  .archive-label { font-size: 11px; }
+  .records-heading .eyebrow { font-size: 11px; }
+  .ticket-title .eyebrow { font-size: 11px; }
+  .ticket-title > p:last-child { font-size: 14px; }
+  .archive-note > p:last-child { font-size: 13px; }
+  .schema > p, .panel .editor-help { font-size: 14px; }
+  .schema summary { font-size: 15px; }
+  .schema code { font-size: 14px; }
+  .schema li span { font-size: 12px; }
+  .panel p { font-size: 16px; }
+  .concept p { font-size: 15px; }
+  button:not(.mission), button.expand-editor { font-size: 14px; }
+  .mobile-navigation a { font-size: 14px; }
+}
+
+@media (max-width: 450px) {
+  /* A vertical list avoids cramped cards and horizontal scrolling on phones. */
+  .missions-sidebar nav { grid-template-columns: minmax(0, 1fr); }
+  .mission { min-height: 66px; align-items: center; }
+  .header-nav { font-size: 12px; }
+  .hero-meta { font-size: 11px; }
+  .lesson-kind { font-size: 11px; }
+  .lesson-heading .eyebrow { font-size: 11px; }
+}
