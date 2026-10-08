@@ -1,0 +1,83 @@
+{
+  "id": "chapter-01",
+  "title": "The Passenger Manifest",
+  "subtitle": "Welcome to the Records Room",
+  "historicalNote": "This chapter uses fictional training passengers inspired by the setting of RMS Titanic. These records are NOT genuine historical passenger records.",
+  "lessons": [
+    {
+      "id": "ch01-01",
+      "number": 1,
+      "title": "Meet the Database",
+      "kind": "concept",
+      "objective": "Learn what a table, a row, and a column are.",
+      "story": "The archive has received a small practice ledger of passenger records. Before beginning your research, inspect how its information is organized.",
+      "explanation": "A database stores organized information. A table holds related records. Each row is one record, and each column describes an attribute such as a passenger's name or age. SELECT * means ‘show every column’. LIMIT requests only a certain number of rows.",
+      "task": "Show the first five rows and all columns from the passengers table.",
+      "starterSql": "SELECT *\nFROM passengers\nLIMIT 5;",
+      "referenceSql": "SELECT * FROM passengers LIMIT 5;",
+      "hints": ["The table is named passengers.", "SELECT * requests every column; LIMIT 5 restricts the sample.", "Try SELECT * FROM passengers LIMIT 5;"],
+      "solutionExplanation": "SELECT * retrieves every column; FROM specifies the table; LIMIT 5 keeps the result short.",
+      "orderMatters": true
+    },
+    {
+      "id": "ch01-02",
+      "number": 2,
+      "title": "Your First Query",
+      "kind": "practice",
+      "objective": "Select a single column using SELECT and FROM.",
+      "story": "The curator is preparing an index of names. She needs only the names, not every detail in the ledger.",
+      "explanation": "SQL lets you request particular columns. SELECT name FROM passengers returns the name field for each row. Use the exact field name shown in the Database Explorer.",
+      "task": "Retrieve the name of every passenger in the practice ledger.",
+      "starterSql": "SELECT ...\nFROM passengers;",
+      "referenceSql": "SELECT name FROM passengers;",
+      "hints": ["You need just one column.", "The column is called name, without an s.", "Use SELECT name FROM passengers;"],
+      "solutionExplanation": "SELECT name returns just the name column, without extra passenger details.",
+      "orderMatters": false
+    },
+    {
+      "id": "ch01-03",
+      "number": 3,
+      "title": "Passenger Profiles",
+      "kind": "practice",
+      "objective": "Retrieve more than one column.",
+      "story": "The archive's researcher wants to compare ages and names while reviewing the ledger.",
+      "explanation": "Put a comma between fields when selecting multiple columns: SELECT name, age FROM passengers. Column order controls how the output is displayed.",
+      "task": "Retrieve the name and age of every passenger.",
+      "starterSql": "SELECT name, ...\nFROM passengers;",
+      "referenceSql": "SELECT name, age FROM passengers;",
+      "hints": ["You need exactly two columns.", "Separate the field names with a comma.", "Try SELECT name, age FROM passengers;"],
+      "solutionExplanation": "SELECT name, age produces a two-column result, with one row per passenger.",
+      "orderMatters": false
+    },
+    {
+      "id": "ch01-04",
+      "number": 4,
+      "title": "A Shorter Register",
+      "kind": "practice",
+      "objective": "Use LIMIT to request a small sample.",
+      "story": "The chief archivist is printing a short sample for a colleague. Space on the page is limited.",
+      "explanation": "LIMIT restricts how many rows are returned. It is useful when examining unfamiliar data. Without ORDER BY (covered next chapter), ‘first’ means the database's current row order, not a historically meaningful order.",
+      "task": "Retrieve name and passenger_class for only the first five records.",
+      "starterSql": "SELECT name, passenger_class\nFROM passengers\nLIMIT ...;",
+      "referenceSql": "SELECT name, passenger_class FROM passengers LIMIT 5;",
+      "hints": ["Select name and passenger_class.", "LIMIT belongs after FROM passengers.", "Set LIMIT to 5."],
+      "solutionExplanation": "LIMIT 5 keeps only the first five records in the practice table's present order.",
+      "orderMatters": true
+    },
+    {
+      "id": "ch01-05",
+      "number": 5,
+      "title": "Your First Assignment",
+      "kind": "challenge",
+      "objective": "Combine selecting multiple fields and limiting results.",
+      "story": "The records supervisor requests a ten-entry summary showing each passenger's identifier, name, and ticket price. This is your first independent archive assignment.",
+      "explanation": "Think about the question before writing code: Which fields do you need? Which table contains them? How many rows are requested? Build your query from these parts.",
+      "task": "Return passenger_id, name, and ticket_fare for the first ten rows, with no extra columns.",
+      "starterSql": "-- Your assignment\nSELECT\nFROM passengers;",
+      "referenceSql": "SELECT passenger_id, name, ticket_fare FROM passengers LIMIT 10;",
+      "hints": ["The three requested column names are shown in the explorer.", "Separate the columns with commas and use the passengers table.", "After FROM passengers, add LIMIT 10."],
+      "solutionExplanation": "You combined multiple columns, a source table, and a row limit to satisfy a practical data request.",
+      "orderMatters": true
+    }
+  ]
+}

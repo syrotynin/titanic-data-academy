@@ -1,0 +1,25 @@
+passenger_id,name,age,passenger_class,embarked_port,ticket_fare
+1,Eleanor Whitmore,28,1,Southampton,73.5
+2,Thomas Hargreaves,42,2,Southampton,26.0
+3,Clara Bellamy,19,3,Cherbourg,7.25
+4,Arthur Pennington,51,1,Southampton,80.0
+5,Rosemary Finch,33,2,Queenstown,13.0
+6,Samuel Mercer,24,3,Southampton,8.05
+7,Beatrice Holloway,45,1,Cherbourg,92.0
+8,Edmund Clarke,37,2,Southampton,21.0
+9,Mabel Ashford,16,3,Queenstown,7.75
+10,Frederick Talbot,60,1,Southampton,110.0
+11,Violet Bennett,29,2,Cherbourg,22.5
+12,Henry Dalrymple,40,3,Southampton,7.9
+13,Alice Merriweather,34,1,Southampton,65.0
+14,George Sutton,22,3,Queenstown,7.5
+15,Florence Wycliffe,38,2,Southampton,27.0
+16,Benjamin Archer,55,1,Cherbourg,75.25
+17,Edith Pembroke,27,3,Southampton,8.1
+18,Walter Hughes,31,2,Southampton,24.0
+19,Agnes Fairchild,48,1,Cherbourg,83.5
+20,Oliver Reed,26,3,Queenstown,7.8
+21,Louisa Farnham,23,2,Southampton,20.5
+22,Charles Rivington,58,1,Southampton,105.0
+23,Nora Tilbury,36,3,Queenstown,7.65
+24,James Cartwright,44,2,Cherbourg,30.0
