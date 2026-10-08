@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { AnchorMark, ShipIllustration } from "./components/NauticalArtwork";
 import { SqlEditor } from "./components/SqlEditor";
 import chapter from "../content/chapter-01.json";
@@ -34,6 +34,7 @@ export default function App() {
   const [hint, setHint] = useState(0);
   const [solution, setSolution] = useState(false);
   const [storageWarning, setStorageWarning] = useState(false);
+  const missionToScrollTo = useRef<string | null>(null);
   useEffect(() => {
     let active = true;
     void loadProgress(ids).then((value) => {
@@ -55,6 +56,24 @@ export default function App() {
       client.stop();
     };
   }, [client]);
+  // Wait until React has rendered the newly selected mission before scrolling.
+  // Only Next mission triggers this; sidebar navigation keeps its usual behavior.
+  useEffect(() => {
+    if (!progress || missionToScrollTo.current !== progress.selected) return;
+    missionToScrollTo.current = null;
+
+    const lesson = document.getElementById("lesson");
+    if (!lesson) return;
+
+    lesson.scrollIntoView({
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+      block: "start",
+    });
+    lesson.querySelector<HTMLElement>("h2")?.focus({ preventScroll: true });
+  }, [progress?.selected]);
+
   function persist(next: Progress) {
     setProgress(next);
     void saveProgress(next).then((saved) => setStorageWarning(!saved));
@@ -313,7 +332,7 @@ export default function App() {
                     : "GUIDED PRACTICE"}
               </span>
             </div>
-            <h2>{mission.title}</h2>
+            <h2 tabIndex={-1}>{mission.title}</h2>
             <p className="lesson-goal">
               <strong>Your goal:</strong> {mission.objective}
             </p>
@@ -480,7 +499,10 @@ export default function App() {
                 <button
                   className="next-mission"
                   disabled={busy}
-                  onClick={() => select(missions[index + 1])}
+                  onClick={() => {
+                    missionToScrollTo.current = missions[index + 1].id;
+                    select(missions[index + 1]);
+                  }}
                 >
                   Next mission →
                 </button>
