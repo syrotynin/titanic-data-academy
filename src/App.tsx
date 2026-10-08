@@ -1,11 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import CodeMirror from "@uiw/react-codemirror";
-import { sql } from "@codemirror/lang-sql";
-import { EditorView } from "@codemirror/view";
-const editorAttributes = EditorView.contentAttributes.of({
-  "aria-label": "SQL query",
-  "aria-describedby": "editor-help",
-});
+import { AnchorMark, ShipIllustration } from "./components/NauticalArtwork";
+import { SqlEditor } from "./components/SqlEditor";
 import chapter from "../content/chapter-01.json";
 import { SqlClient } from "./lib/sqlClient";
 import { grade } from "./lib/grading";
@@ -145,47 +140,109 @@ export default function App() {
       <a className="skip-link" href="#sql-workspace">
         Skip to SQL workspace
       </a>
-      <header>
-        <div className="brand">⚓ TITANIC DATA ACADEMY</div>
-        <span>SQL & Data Fundamentals · Chapter 1</span>
+      <header className="site-header">
+        <a className="brand" href="#top" aria-label="Titanic Data Academy home">
+          <span className="brand-emblem">
+            <AnchorMark />
+          </span>
+          <span>
+            TITANIC<span className="brand-subtitle">DATA ACADEMY</span>
+          </span>
+        </a>
+        <nav className="header-nav" aria-label="Main navigation">
+          <a href="#records-room">The records room</a>
+          <a href="#sql-workspace">
+            SQL workspace <span aria-hidden="true">→</span>
+          </a>
+        </nav>
+        <span className="header-edition">
+          A JOURNEY THROUGH DATA <span>R.M.S. TITANIC · 1912</span>
+        </span>
       </header>
-      <section className="hero">
-        <p className="eyebrow">THE HISTORICAL ARCHIVE · 1912</p>
-        <h1>{chapter.title}</h1>
-        <p>
-          Learn real SQL while exploring a practice passenger ledger. No prior
-          SQL experience or account needed.
-        </p>
-        <p className="historical-note">{chapter.historicalNote}</p>
-        <div
-          className="progress"
-          role="progressbar"
-          aria-label="Chapter completion"
-          aria-valuemin={0}
-          aria-valuemax={missions.length}
-          aria-valuenow={progress.done.length}
-        >
-          <div
-            style={{
-              width: `${(100 * progress.done.length) / missions.length}%`,
-            }}
-          />
+      <section className="hero" id="top" aria-labelledby="chapter-title">
+        <div className="hero-inner">
+          <div className="hero-copy">
+            <p className="eyebrow">
+              <span className="ornament-line" /> THE HISTORICAL ARCHIVE ·
+              CHAPTER I
+            </p>
+            <h1 id="chapter-title">
+              {chapter.title.split(" ").slice(0, -1).join(" ")}{" "}
+              <em>{chapter.title.split(" ").at(-1)}</em>
+            </h1>
+            <p className="hero-description">
+              Every passenger has a story. Every record holds a clue. Step into
+              the records room and learn SQL, one discovery at a time.
+            </p>
+            <div className="hero-meta">
+              <span>BEGINNER FRIENDLY</span>
+              <span>{missions.length} MISSIONS</span>
+              <span>REAL SQL</span>
+            </div>
+          </div>
+          <div className="hero-art">
+            <div className="archive-label">
+              <span>MARITIME COLLECTION</span>
+              <span>VOL. 01 / 1912</span>
+            </div>
+            <ShipIllustration />
+          </div>
         </div>
-        <p>
+      </section>
+      <section className="passage-ticket" aria-label="Your learning passage">
+        <div className="ticket-chapter">
+          <span className="eyebrow">CHAPTER</span>
+          <strong>01</strong>
+        </div>
+        <div className="ticket-title">
+          <p className="eyebrow">YOUR LEARNING PASSAGE</p>
+          <h2>{chapter.subtitle}</h2>
+          <p>No experience needed. Just a little curiosity.</p>
+        </div>
+        <div className="ticket-progress">
+          <div className="progress-label">
+            <span>YOUR PROGRESS</span>
+            <strong>
+              {progress.done.length} / {missions.length}
+            </strong>
+          </div>
+          <div
+            className="progress"
+            role="progressbar"
+            aria-label="Chapter completion"
+            aria-valuemin={0}
+            aria-valuemax={missions.length}
+            aria-valuenow={progress.done.length}
+          >
+            <div
+              style={{
+                width: `${(100 * progress.done.length) / missions.length}%`,
+              }}
+            />
+          </div>
           <small>
             {progress.done.length} of {missions.length} missions completed
           </small>
-        </p>
+        </div>
         <a className="journey-link" href="#lesson">
           {Object.keys(progress.drafts).length || progress.done.length
             ? "Continue journey"
             : "Begin journey"}
+          <span aria-hidden="true">→</span>
         </a>
       </section>
+      <div className="records-heading" id="records-room">
+        <p className="eyebrow">THE RECORDS ROOM</p>
+        <span>Explore. Query. Discover.</span>
+      </div>
       <div className="layout">
-        <aside aria-label="Chapter missions">
-          <h2>Your missions</h2>
-          <nav>
+        <aside className="missions-sidebar" aria-label="Chapter missions">
+          <div className="sidebar-heading">
+            <p className="eyebrow">YOUR COURSE</p>
+            <h2>A course to discovery</h2>
+            <p>SQL & Data Fundamentals</p>
+          </div>
+          <nav aria-label="Your missions">
             {missions.map((m) => (
               <button
                 key={m.id}
@@ -194,47 +251,94 @@ export default function App() {
                 aria-current={m.id === mission.id ? "step" : undefined}
                 onClick={() => select(m)}
               >
-                <span aria-hidden="true">
-                  {progress.done.includes(m.id) ? "✓ " : "○ "}
+                <span
+                  className={`mission-number ${progress.done.includes(m.id) ? "done" : ""}`}
+                  aria-hidden="true"
+                >
+                  {progress.done.includes(m.id)
+                    ? "✓"
+                    : String(m.number).padStart(2, "0")}
                 </span>
-                {m.title}
+                <span className="mission-label">
+                  {m.title}
+                  <small>
+                    {m.kind === "concept"
+                      ? "The foundations"
+                      : m.kind === "challenge"
+                        ? "Put it all together"
+                        : "Guided practice"}
+                  </small>
+                </span>
+                {m.id === mission.id && (
+                  <span className="mission-arrow" aria-hidden="true">
+                    ›
+                  </span>
+                )}
                 {progress.done.includes(m.id) && (
                   <span className="sr-only"> (completed)</span>
                 )}
               </button>
             ))}
           </nav>
-          <p className="note">
-            Progress and query drafts are saved in this browser.
-          </p>
+          <div className="sidebar-note">
+            <span className="saved-indicator" aria-hidden="true" />
+            <p className="note">
+              Progress and query drafts are saved in this browser.
+            </p>
+          </div>
           {storageWarning && (
             <p role="alert" className="error">
               Browser storage is unavailable. Your work will last only for this
               visit.
             </p>
           )}
+          <div className="archive-note">
+            <AnchorMark />
+            <p className="eyebrow">A NOTE FROM THE ARCHIVE</p>
+            <p>{chapter.historicalNote}</p>
+          </div>
         </aside>
         <section className="workspace" aria-label="Learning workspace">
-          <article className="panel" id="lesson">
-            <p className="eyebrow">
-              ASSIGNMENT {mission.number} OF {missions.length}
-            </p>
+          <article className="panel lesson-panel" id="lesson">
+            <div className="lesson-heading">
+              <p className="eyebrow">
+                ASSIGNMENT {String(mission.number).padStart(2, "0")}{" "}
+                <span>/ {String(missions.length).padStart(2, "0")}</span>
+              </p>
+              <span className="lesson-kind">
+                {mission.kind === "concept"
+                  ? "THE FOUNDATIONS"
+                  : mission.kind === "challenge"
+                    ? "THE CHALLENGE"
+                    : "GUIDED PRACTICE"}
+              </span>
+            </div>
             <h2>{mission.title}</h2>
-            <p>
+            <p className="lesson-goal">
               <strong>Your goal:</strong> {mission.objective}
             </p>
-            <p>{mission.story}</p>
+            <p className="lesson-story">{mission.story}</p>
             <div className="concept">
               <h3>The SQL concept</h3>
               <p>{mission.explanation}</p>
             </div>
-            <h3>Your task</h3>
-            <p>{mission.task}</p>
+            <div className="task">
+              <span className="task-mark" aria-hidden="true">
+                ›
+              </span>
+              <div>
+                <h3>Your task</h3>
+                <p>{mission.task}</p>
+              </div>
+            </div>
             <details className="schema" open>
               <summary>Database explorer · passengers</summary>
               {schema.length ? (
                 <>
-                  <p>24 fictional records. Columns available in your query:</p>
+                  <p>
+                    24 fictional records <span aria-hidden="true">·</span>{" "}
+                    Columns available in your query:
+                  </p>
                   <ul>
                     {schema.map((column) => (
                       <li key={column.name}>
@@ -253,13 +357,18 @@ export default function App() {
             </details>
           </article>
           <section
-            className="panel"
+            className="panel editor-panel"
             id="sql-workspace"
             aria-labelledby="sql-heading"
           >
             <div className="between">
-              <h2 id="sql-heading">SQL workspace</h2>
-              <small>
+              <h2 id="sql-heading">
+                <span className="heading-symbol" aria-hidden="true">
+                  ⌘
+                </span>
+                SQL workspace
+              </h2>
+              <small className={`engine-status ${engineReady ? "ready" : ""}`}>
                 {busy
                   ? "Running…"
                   : engineReady
@@ -271,14 +380,22 @@ export default function App() {
               Write one SELECT query. Run it to explore; check it to complete
               the mission. Press Tab to leave the editor.
             </p>
-            <CodeMirror
+            <SqlEditor
               value={query}
-              height="210px"
-              extensions={[sql(), editorAttributes]}
-              indentWithTab={false}
               onChange={edit}
-              theme="dark"
-              editable={!busy}
+              busy={busy}
+              ready={engineReady}
+              task={mission.task}
+              columns={schema.map((column) => column.name)}
+              onRun={(assessment) => void execute(assessment)}
+              message={
+                error ||
+                feedback?.text ||
+                (result
+                  ? `${result.values.length} rows returned. Done editing takes you back to the results.`
+                  : "")
+              }
+              isError={Boolean(error) || feedback?.correct === false}
             />
             <div className="actions">
               <button
@@ -325,7 +442,7 @@ export default function App() {
               )}
               {feedback?.correct && <p>{mission.solutionExplanation}</p>}
             </div>
-            <div className="actions">
+            <div className="actions help-actions">
               <button
                 disabled={busy || hint === mission.hints.length}
                 onClick={() => setHint(hint + 1)}
@@ -369,7 +486,11 @@ export default function App() {
                 </button>
               )}
           </section>
-          <section className="panel" aria-labelledby="results-heading">
+          <section
+            className="panel results-panel"
+            id="query-results"
+            aria-labelledby="results-heading"
+          >
             <div className="between">
               <h2 id="results-heading">Query results</h2>
               <small>
@@ -425,7 +546,13 @@ export default function App() {
                 {!result.values.length && <p>No rows matched your query.</p>}
               </>
             ) : (
-              <p className="empty">Your query results will appear here.</p>
+              <div className="empty">
+                <span className="empty-ledger" aria-hidden="true">
+                  ▤
+                </span>
+                <p>Your next discovery starts with a query.</p>
+                <small>Your query results will appear here.</small>
+              </div>
             )}
           </section>
           {complete && (
@@ -451,10 +578,22 @@ export default function App() {
           )}
         </section>
       </div>
-      <footer>
-        Inspired by the history of RMS Titanic · Fictional practice records ·
-        Not affiliated with any film production
+      <footer className="site-footer">
+        <div className="footer-brand">
+          <AnchorMark />
+          <span>TITANIC DATA ACADEMY</span>
+        </div>
+        <p>A little history. A new way to see data.</p>
+        <small>
+          Inspired by RMS Titanic · Fictional practice records · Not affiliated
+          with any film production
+        </small>
       </footer>
+      <nav className="mobile-navigation" aria-label="Workspace shortcuts">
+        <a href="#lesson">The lesson</a>
+        <a href="#sql-workspace">Write SQL</a>
+        <a href="#query-results">Results</a>
+      </nav>
     </main>
   );
 }
