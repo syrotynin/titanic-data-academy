@@ -17,16 +17,17 @@
 
 ## Run locally
 
-You need Node.js 22.6 or newer (Node 22 recommended).
+You need Node.js 22.6 or newer (Node 22 recommended). Python 3 is needed for database generation and validation.
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
 Open the local URL printed by Vite. To verify before deployment:
 
 ```bash
+npm run test:database
 npm test
 npm run typecheck
 npm run build
@@ -35,18 +36,25 @@ npm run preview
 
 **Note:** The SQLite WASM file is bundled from the `sql.js` npm package by Vite. It is not fetched from a third-party runtime CDN. The only external UI dependency at runtime is optional Google Fonts; CSS provides local fallbacks.
 
-## Put this in a new GitHub repository
-
-Create an **empty** repository called `titanic-data-academy` in the `syrotynin` account (do not initialize it with a README or license), then from this project directory:
+## Browser regression checks
 
 ```bash
-git init
-git add .
-git commit -m "feat: scaffold Titanic Data Academy chapter 1"
-git branch -M main
-git remote add origin https://github.com/syrotynin/titanic-data-academy.git
-git push -u origin main
+npx playwright install chromium
+npm run test:e2e
 ```
+
+The runner starts and stops its own Vite server. If Chromium is already installed, use `CHROMIUM_PATH=/path/to/chromium npm run test:e2e` instead of downloading a browser. Tests exercise all five missions, grading feedback, per-mission drafts, storage fallback, keyboard navigation, result limits, and timeout recovery. Google Fonts are blocked during browser tests to verify the app works with local assets alone.
+
+To test the production build at the GitHub Pages path:
+
+```bash
+GITHUB_PAGES=true npm run build
+PLAYWRIGHT_PREVIEW=true GITHUB_PAGES=true npm run test:e2e
+```
+
+To regenerate the practice database from its committed fictional CSV source, run `python3 scripts/build-sample-db.py`, then `npm run test:database`. Normal development uses the committed SQLite file and does not regenerate it.
+
+## GitHub Pages deployment
 
 On GitHub, go to **Settings → Pages → Build and deployment**, select **GitHub Actions** as the source. `.github/workflows/pages.yml` tests, builds, and deploys on pushes to `main`.
 
@@ -65,6 +73,7 @@ Pages visibility depends on GitHub plan and repository visibility. A public repo
 | [Architecture](docs/ARCHITECTURE.md) | Application modules, workers, grading, persistence, deployment |
 | [Roadmap](docs/ROADMAP.md) | Eight-chapter curriculum and development milestones |
 | [Data ethics and provenance](docs/DATA_PROVENANCE.md) | Fictional training records vs historical datasets |
+| [Initial quality review](docs/INITIAL_REVIEW.md) | Scope assessment, repaired defects, validation and remaining release work |
 | [MVP task list](docs/MVP_CHECKLIST.md) | Remaining checks before first real use |
 
 ## Folder structure
@@ -76,7 +85,7 @@ public/data/       generated SQLite practice database and CSV source
 scripts/           reproducible dataset generator
 src/               React application, SQL worker, grading and IndexedDB
 src/styles/        Titanic-inspired UI styling
-tests/             content integrity tests
+tests/             SQL, grading, persistence, worker and browser tests
 .github/workflows/ GitHub Pages deployment workflow
 ```
 

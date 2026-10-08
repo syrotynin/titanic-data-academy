@@ -2,7 +2,7 @@
 
 **Theme:** Welcome to the historical archive; learn to examine a fictional practice ledger inspired by RMS Titanic.
 
-**Duration:** Approximately 45–60 minutes, self-paced. **Dataset:** 24 invented passenger records in `public/data/titanic-ch01.sqlite`.
+**Duration:** Self-paced; validate the time estimate with a beginner before release. **Dataset:** 24 invented passenger records in `public/data/titanic-ch01.sqlite`.
 
 ## Narrative
 

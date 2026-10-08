@@ -26,9 +26,10 @@ Later chapters can introduce verified historical data with rigorous source and l
 - [x] Chapter 1 content, hints and result-based grader
 - [x] Local progress persistence
 - [x] GitHub Pages workflow configuration
-- [ ] Install npm dependencies and verify TypeScript/production build
+- [x] Locked npm installation, SQL/grading/worker/storage tests, and TypeScript/production build
+- [x] Automated Chromium learner journey at development and GitHub Pages paths
 - [ ] Browser manual testing on Safari, Chrome and mobile
-- [ ] Create separate GitHub repository and publish
+- [ ] Confirm GitHub Pages settings and live deployment
 
 ### Milestone B — Learner pilot
 
@@ -40,7 +41,8 @@ Later chapters can introduce verified historical data with rigorous source and l
 ### Milestone C — SQL foundations
 
 - [ ] Build chapters 2–4
-- [ ] Add query grading test suites and more sample records
+- [x] Add Chapter 1 query grading regression tests
+- [ ] Extend grading cases and datasets for later chapters
 - [ ] Teach JOIN through a normalized, multi-table dataset
 
 ### Milestone D — Data fundamentals

@@ -1,1 +1,0 @@
-import test from 'node:test';import assert from 'node:assert/strict';import{readFileSync}from'node:fs';test('project has five learning missions',()=>{const ch=JSON.parse(readFileSync(new URL('../content/chapter-01.json',import.meta.url)));assert.ok(Array.isArray(ch.missions??ch.lessons??ch.exercises));});

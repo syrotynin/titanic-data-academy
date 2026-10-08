@@ -8,16 +8,18 @@
 - [x] Results, hints, database explorer, reset action
 - [x] IndexedDB progress with localStorage fallback
 - [x] GitHub Actions build/deploy workflow
-- [ ] `npm install`, `npm test`, `npm run typecheck`, `npm run build` pass on a connected machine
+- [x] Frozen dependency installation, database verification, unit tests, type check and production build pass locally
+- [x] Automated Chromium checks cover five missions, storage fallback, result limits and timeout recovery
 - [ ] Inspect pages and flows in Safari and Chrome
 - [ ] Confirm deployment URL and GitHub Pages configuration
 
 ## Learning experience
-- [ ] Test correct, incorrect and alternate valid SQL
-- [ ] Test invalid column and invalid syntax error feedback
-- [ ] Test hint progression and solution reveal
-- [ ] Confirm draft and completion persist after refresh
-- [ ] Test keyboard-only navigation and VoiceOver
+- [x] Test correct, incorrect and alternate valid SQL
+- [x] Test invalid column and invalid syntax error feedback
+- [x] Test hint progression and solution reveal
+- [x] Confirm selected mission, distinct drafts and completion persist after refresh
+- [x] Chromium regression check confirms Tab leaves the editor and mobile layout stays within the viewport
+- [ ] Complete a manual keyboard-only journey and VoiceOver audit
 - [ ] Observe learner finishing all five missions
 - [ ] Ask learner to explain concepts in own words
 
