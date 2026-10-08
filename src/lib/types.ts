@@ -13,6 +13,13 @@ export type Mission = {
   objective: string;
   story: string;
   explanation: string;
+  keyTerms: { term: string; meaning: string }[];
+  example: {
+    context: string;
+    sql: string;
+    walkthrough: string[];
+    takeaway: string;
+  };
   task: string;
   starterSql: string;
   referenceSql: string;
